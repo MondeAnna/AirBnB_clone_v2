@@ -1,0 +1,22 @@
+# everything
+* 
+
+# exceotions: files
+!.gitignore
+!*.css
+!*.html
+!*.ico
+!*.md
+!*.png
+!*.py
+!AUTHORS
+
+# exceotions: directories
+!models
+!models/engine
+!tests
+!tests/test_engine
+!tests/test_models
+!web_static
+!web_static/images
+!web_static/styles
