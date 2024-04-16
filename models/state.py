@@ -2,7 +2,8 @@
 """ State Module for HBNB project """
 from models.base_model import Base, BaseModel, sa
 from models.city import City  # use __init__.py version
-from models.engine import FileStorage  # use __init__.py version
+from models.engine.file_storage import FileStorage  # use __init__.py version
+from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):

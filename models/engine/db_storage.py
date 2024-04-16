@@ -27,8 +27,33 @@ class DBStorage:
 
         self.__session = Session(bind=self.__engine)
 
+        metadata = sa.MetaData()
+
         # name this properly please
         if ENV == "test !!!! fix me":
-            metadata = sa.MetaData()
             metadata.reflect(self.__engine)
             metadata.drop_all(self.__engine)
+
+        metadata.create_all(self.__engine)
+
+    def all(self, cls=None):
+        if cls:
+            return self.__session.query(cls).all()  # see if .all() is needed
+        return self.__session.query().all()  # see if this workds
+
+    def new(self, obj):
+        self.__session.add(obj)
+        """ add the object to the current database session (self.__session) """
+
+    def save(self):
+        self.__session.commit()
+        """ commit all changes of the current database session (self.__session) """
+        ...
+
+    def delete(self, obj=None):
+        """delete from the current database session obj if not None"""
+        if obj:
+            ...
+
+    def reload(self):
+        ...
