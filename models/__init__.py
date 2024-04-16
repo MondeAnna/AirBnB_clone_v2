@@ -9,7 +9,7 @@ HBNB_TYPE_STORAGE = os.getenv("HBNB_TYPE_STORAGE", "file")
 
 
 if HBNB_TYPE_STORAGE == "db":
-    storage= DBStorage()
+    storage = DBStorage()
 else:
     storage = FileStorage()
 

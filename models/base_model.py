@@ -5,7 +5,9 @@ from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 import sqlalchemy as sa
 
+
 Base = declarative_base()
+
 
 class BaseModel:
     """A base class for all hbnb models"""
