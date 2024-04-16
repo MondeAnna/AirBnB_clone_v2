@@ -2,10 +2,35 @@
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
 from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+import sqlalchemy as sa
 
+Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
+    id = sa.Column(
+        "id",
+        sa.String(60),
+        nullable=False,
+        primary_key=True
+    )
+
+    created_at = sa.Column(
+        "created_at",
+        sa.DateTime(),
+        nullable=False,
+        default=datetime.utcnow,
+    )
+
+    updated_at = sa.Column(
+        "updated_at",
+        sa.DateTime(),
+        nullable=False,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
+    )
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
