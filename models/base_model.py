@@ -45,10 +45,9 @@ class BaseModel:
             del kwargs['__class__']
             self.__dict__.update(kwargs)
 
-    def __str__(self):
-        """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+    def delete(self):
+        """Deletes current instance from storage"""
+        storage.delete(self)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -70,3 +69,8 @@ class BaseModel:
             dictionary.pop("_sa_instance_state")
 
         return dictionary
+
+    def __str__(self):
+        """Returns a string representation of the instance"""
+        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
