@@ -21,3 +21,6 @@
 !web_static
 !web_static/images
 !web_static/styles
+
+# specific files to ignore
+main.py
