@@ -9,6 +9,7 @@
 !*.md
 !*.png
 !*.py
+!*.sql
 !AUTHORS
 
 # exceotions: directories
