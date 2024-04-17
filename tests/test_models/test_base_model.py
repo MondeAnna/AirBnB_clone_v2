@@ -1,14 +1,17 @@
 #!/usr/bin/python3
 """ place holders """
-from models.base_model import BaseModel
-import unittest
+from unittest.mock import mock_open
+from unittest.mock import patch
+from unittest import TestCase
 import datetime
 import string
-import json
 import os
 
 
-class test_basemodel(unittest.TestCase):
+from models.base_model import BaseModel
+
+
+class test_basemodel(TestCase):
     """place holders"""
 
     ALLOWED_ID_CHARS = string.hexdigits.lower() + "-"
@@ -27,13 +30,6 @@ class test_basemodel(unittest.TestCase):
 
         self.name = "BaseModel"
         self.model = BaseModel()
-
-    # patch open at some point
-    def tearDown(self):
-        try:
-            os.remove("file.json")
-        except:
-            pass
 
     def test_model_without_kwargs(self):
         """focus on `id`, `created_at` and `updated_at`"""
@@ -116,12 +112,10 @@ class test_basemodel(unittest.TestCase):
 
         self.assertNotEqual(new_model.created_at, new_model.updated_at)
 
-    @unittest.skip
-    def test_save(self):
-        """Testing save"""
+    def test_save_to_file(self):
+        """assert saving renders instance to file storage"""
 
-        self.model.save()
-        key = self.name + "." + self.model.id
-        with open("file.json", "r") as f:
-            j = json.load(f)
-            self.assertEqual(j[key], self.model.to_dict())
+        with patch("builtins.open", mock_open(), create=True) as open_:
+            self.model.save()
+
+        open_.assert_called_once()
