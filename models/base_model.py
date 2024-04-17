@@ -99,3 +99,11 @@ class BaseModel:
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split(".")[-1]).split("'")[0]
         return "[{}] ({}) {}".format(cls, self.id, self.__dict__)
+
+    def __eq__(self, other):
+        return (
+            self.id == other.id
+            and self.__class__ == other.__class__
+            and self.created_at == other.created_at
+            and self.updated_at == other.updated_at
+        )

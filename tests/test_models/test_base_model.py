@@ -53,14 +53,17 @@ class test_basemodel(unittest.TestCase):
         """focus on `id`, `created_at`,  `updated_at` and `__class__`"""
         kwargs = self.model.to_dict()
         new_model = BaseModel(**kwargs)
+
         attrs_actual = list(new_model.__dict__.keys())
         attrs_expected = ["id", "created_at", "updated_at"]
 
         self.assertTrue("__class__" not in new_model.__dict__)
         self.assertEqual(attrs_actual, attrs_expected)
-        self.assertEqual(self.model.id, new_model.id)
-        self.assertNotEqual(new_model.created_at, new_model.updated_at)
-        self.assertEqual(self.model.created_at, new_model.created_at)
+
+    def test_two_models_are_the_same_when_fundamental_align(self):
+        kwargs = self.model.to_dict()
+        new_model = BaseModel(**kwargs)
+        self.assertEqual(self.model, new_model)
 
     @unittest.skip
     def test_kwargs(self):
