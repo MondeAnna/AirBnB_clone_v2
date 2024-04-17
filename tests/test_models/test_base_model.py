@@ -69,18 +69,26 @@ class test_basemodel(unittest.TestCase):
         new_model = BaseModel(**kwargs)
         self.assertEqual(self.model, new_model)
 
-    def test_kwargs_int(self):
+    def test_invalid_kwargs_keywords(self):
         """assert that only strings can be used as kwarg keys"""
 
+        expected_error = "keywords must be strings"
         kwargs = self.model.to_dict()
         kwargs.update({1: 2})
 
         with self.assertRaises(TypeError) as exception:
             BaseModel(**kwargs)
 
-        expected_error = "keywords must be strings"
         actual_error, *_ = exception.exception.args
+        self.assertEqual(actual_error, expected_error)
 
+        kwargs = self.model.to_dict()
+        kwargs.update({None: None})
+
+        with self.assertRaises(TypeError) as exception:
+            BaseModel(**kwargs)
+
+        actual_error, *_ = exception.exception.args
         self.assertEqual(actual_error, expected_error)
 
     def test_str(self):
@@ -89,14 +97,6 @@ class test_basemodel(unittest.TestCase):
         expected = f"[BaseModel] ({self.model.id}) {self.model.__dict__}"
         actual = str(self.model)
         self.assertEqual(actual, expected)
-
-    @unittest.skip
-    def test_kwargs_none(self):
-        """place holders"""
-
-        n = {None: None}
-        with self.assertRaises(TypeError):
-            new = self.value(**n)
 
     @unittest.skip
     def test_kwargs_one(self):
