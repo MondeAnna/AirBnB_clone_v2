@@ -6,6 +6,7 @@ from unittest.mock import Mock
 from unittest import TestCase
 from copy import deepcopy
 import unittest
+import json
 import os
 
 
@@ -73,6 +74,7 @@ class test_fileStorage(TestCase):
 
         storage.new(self.model_02)
         storage.new(self.model_02)
+
         self.assertEqual(storage.all(), {self.identifier_02: self.model_02})
 
         storage.delete(self.model_02)
@@ -136,22 +138,31 @@ class test_fileStorage(TestCase):
         with self.assertRaises(ValueError):
             storage.reload()
 
-    @unittest.skip
-    @patch("json.load")
-    def test_reload(self):
+    @patch("pathlib.Path.stat")
+    @patch("pathlib.Path.is_file", return_value=True)
+    def test_reload(self, mock_path, mock_stat):
         """Storage file is successfully loaded to __objects"""
 
-        with patch("builtins.open", mock_open, create=True) as open_:
+        mock_stat.return_value.st_size = 100
+
+        storage.new(self.model_01)
+        storage.new(self.model_02)
+
+        mock_read_in = json.dumps({
+            identifier: obj.to_dict()
+            for identifier, obj in storage.all().items()
+        })
+
+        with patch("builtins.open", mock_open()):
+            storage.delete(self.model_01)
+            storage.delete(self.model_02)
+
+        with patch("builtins.open", mock_open(read_data=mock_read_in)) as open_:
             storage.reload()
 
-        """
-        storage.new(self.model_02)
-        storage.save()
-        storage.delete(self.model_02)
-
-        print(storage.all())
+        self.assertTrue(self.identifier_01 in storage.all().keys())
         self.assertTrue(self.identifier_02 in storage.all().keys())
 
-        storage.delete(self.model_02)
-        """
-
+        with patch("builtins.open", mock_open(), create=True):
+            storage.delete(self.model_01)
+            storage.delete(self.model_02)

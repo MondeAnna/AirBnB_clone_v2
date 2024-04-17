@@ -1,14 +1,15 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
 
-'''
 from models.base_model import Base, BaseModel, sa
 
 
 class City(BaseModel, Base):
+    ...
     """ The city class, contains state ID and name """
     __tablename__ = "cities"
 
+'''
     name = sa.Column(
         "name",
         sa.String(128),
