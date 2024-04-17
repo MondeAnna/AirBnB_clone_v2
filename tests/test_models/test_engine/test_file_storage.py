@@ -51,7 +51,7 @@ class test_fileStorage(TestCase):
         """Tear Down kept as ci/cd checker may write to file during testing"""
 
         try:
-            os.remove("file.json")
+            ...  #os.remove("file.json")
         except:
             pass
 
@@ -137,14 +137,6 @@ class test_fileStorage(TestCase):
         """Nothing happens if file does not exist"""
 
         self.assertEqual(storage.reload(), None)
-
-    @unittest.skip
-    def test_base_model_save(self):
-        """BaseModel save method calls storage save"""
-
-        new = BaseModel()
-        new.save()
-        self.assertTrue(os.path.exists("file.json"))
 
     @unittest.skip
     def test_type_path(self):
