@@ -62,10 +62,9 @@ class FileStorage:
     def reload(self):
         """Loads storage dictionary from file"""
 
-        ...
         """
         classes = {
-            "BaseModel": BaseModel,
+            # "BaseModel": BaseModel,
             # "User": User,
             # "Place": Place,
             # "State": State,
@@ -75,8 +74,13 @@ class FileStorage:
         }
         """
 
-        if pathlib.Path(FileStorage.__file_path).is_file():
-            ...
+        path = pathlib.Path(FileStorage.__file_path)
+
+        if not path.is_file():
+            return
+
+        if not path.stat().st_size:
+            raise ValueError("file is empty")
 
         """
             temp = {}

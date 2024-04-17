@@ -125,9 +125,12 @@ class test_fileStorage(TestCase):
 
         self.assertEqual(storage.reload(), None)
 
-    @unittest.skip
-    def test_reload_empty(self):
-        """Load from an empty file"""
+    @patch("pathlib.Path.stat")
+    @patch("pathlib.Path.is_file", return_value=True)
+    def test_reload_raises_value_error_if_file_is_empty(self, mock_path, mock_stat):
+        """assert reloading from an empty file raises ValueError"""
+
+        mock_stat.return_value.st_size = 0
 
         with self.assertRaises(ValueError):
             storage.reload()
@@ -150,3 +153,4 @@ class test_fileStorage(TestCase):
 
         storage.delete(self.model_02)
         """
+
