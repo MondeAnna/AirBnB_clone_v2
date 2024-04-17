@@ -1,19 +1,31 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+
+
+"""Test suite for the amenity module"""
+
+
+from unittest import TestCase
+
+
+from models.base_model import BaseModel
 from models.amenity import Amenity
 
 
-class test_Amenity(test_basemodel):
-    """ """
+class TestAmenity(TestCase):
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Amenity"
-        self.value = Amenity
+    """Collective testing of base model attributes"""
 
-    def test_name2(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def setUp(self):
+        """Provide a factory for test instances"""
+
+        self.amenity = Amenity()
+
+    def test_initialisation_has_empty_attr(self):
+        """Provide a factory for test instances"""
+
+        self.assertEqual(self.amenity.name, "")
+
+    def test_inheritance(self):
+        """Assert is subclass of BaseModel"""
+
+        self.assertTrue(issubclass(Amenity, BaseModel))

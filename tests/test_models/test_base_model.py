@@ -7,6 +7,7 @@
 from unittest.mock import mock_open
 from unittest.mock import patch
 from unittest import TestCase
+from unittest import skip
 import datetime
 import string
 import os
@@ -114,6 +115,7 @@ class TestBaseModel(TestCase):
 
         self.assertNotEqual(new_model.created_at, new_model.updated_at)
 
+    @skip("`test_file_storage` integrated to system, running this alter it")
     def test_save_to_file(self):
         """assert saving renders instance to file storage"""
 
