@@ -1,5 +1,9 @@
 #!/usr/bin/python3
+
+
 """This module defines a class to manage file storage for hbnb clone"""
+
+
 from importlib import import_module
 import pathlib
 import json

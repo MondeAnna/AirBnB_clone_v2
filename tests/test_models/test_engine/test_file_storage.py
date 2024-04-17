@@ -1,10 +1,13 @@
 #!/usr/bin/python3
-""" Module for testing file storage"""
+
+
+"""Module for testing file storage"""
+
+
 from unittest.mock import mock_open
 from unittest.mock import patch
 from unittest.mock import Mock
 from unittest import TestCase
-from copy import deepcopy
 import unittest
 import json
 import os
@@ -12,9 +15,6 @@ import os
 
 from models.base_model import BaseModel
 from models import storage
-
-
-# we meed to stop this from writing to file system
 
 
 class test_fileStorage(TestCase):
@@ -52,7 +52,7 @@ class test_fileStorage(TestCase):
         """Tear Down kept as ci/cd checker may write to file during testing"""
 
         try:
-            ...  #os.remove("file.json")
+            os.remove("file.json")
         except:
             pass
 
