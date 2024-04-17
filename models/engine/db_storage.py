@@ -3,6 +3,7 @@
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 import os
+from models.base_model import Base
 
 
 USER = os.getenv("HBNB_MYSQL_USER")
@@ -27,14 +28,12 @@ class DBStorage:
 
         self.__session = Session(bind=self.__engine)
 
-        metadata = sa.MetaData()
-
         # name this properly please
-        if ENV == "test !!!! fix me":
-            metadata.reflect(self.__engine)
-            metadata.drop_all(self.__engine)
+        if ENV == "test":
+            Base.metadata.reflect(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
-        metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
 
     def all(self, cls=None):
         if cls:

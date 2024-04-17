@@ -41,6 +41,8 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
+        ...
+        '''
         from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
@@ -62,3 +64,4 @@ class FileStorage:
                     self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+        '''

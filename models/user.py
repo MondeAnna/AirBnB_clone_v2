@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class User"""
+
+'''
 from models.base_model import Base, BaseModel, sa
 
 
@@ -30,3 +32,4 @@ class User(BaseModel, Base):
         sa.String(128),
         nullable=False,
     )
+'''

@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
+
+'''
 from models.base_model import Base, BaseModel, sa
 
 
@@ -19,3 +21,4 @@ class City(BaseModel, Base):
         sa.ForeignKey("states.id"),
         nullable=False,
     )
+'''
