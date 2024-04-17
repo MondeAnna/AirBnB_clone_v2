@@ -6,10 +6,10 @@ import os
 from models.base_model import Base
 
 
-USER = os.getenv("HBNB_MYSQL_USER")
-PWD = os.getenv("HBNB_MYSQL_PWD")
+USER = os.getenv("HBNB_MYSQL_USER", "hbnb_test")
+PWD = os.getenv("HBNB_MYSQL_PWD", "hbnb_test_pwd")
 HOST = os.getenv("HBNB_MYSQL_HOST", "localhost")
-DB = os.getenv("HBNB_MYSQL_DB")
+DB = os.getenv("HBNB_MYSQL_DB", "hbnb_test_db")
 ENV = os.getenv("HBNB_ENV", "test")
 
 
