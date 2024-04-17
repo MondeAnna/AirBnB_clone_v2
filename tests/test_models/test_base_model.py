@@ -66,14 +66,6 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(self.model, new_model)
 
     @unittest.skip
-    def test_kwargs(self):
-        """place holders"""
-        copy = self.model.to_dict()
-        new = BaseModel(**copy)
-        self.assertFalse(new is self.model)
-        self.assertEqual(new, self.model)
-
-    @unittest.skip
     def test_kwargs_int(self):
         """place holders"""
         copy = self.model.to_dict()
