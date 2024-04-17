@@ -60,13 +60,6 @@ class test_fileStorage(TestCase):
         self.assertEqual(storage.all(), {})
 
     @unittest.skip
-    def test_all(self):
-        """__objects is properly returned"""
-        new = BaseModel()
-        temp = storage.all()
-        self.assertIsInstance(temp, dict)
-
-    @unittest.skip
     def test_base_model_instantiation(self):
         """File is not created on BaseModel save"""
         new = BaseModel()
