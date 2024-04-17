@@ -83,24 +83,12 @@ class test_basemodel(unittest.TestCase):
 
         self.assertEqual(actual_error, expected_error)
 
-    @unittest.skip
-    def test_save(self):
-        """Testing save"""
-
-        self.model.save()
-        key = self.name + "." + self.model.id
-        with open("file.json", "r") as f:
-            j = json.load(f)
-            self.assertEqual(j[key], self.model.to_dict())
-
-    @unittest.skip
     def test_str(self):
-        """place holders"""
+        """assert standardised str formatting"""
 
-        self.assertEqual(
-            str(self.model),
-            "[{}] ({}) {}".format(self.name, self.model.id, self.model.__dict__),
-        )
+        expected = f"[BaseModel] ({self.model.id}) {self.model.__dict__}"
+        actual = str(self.model)
+        self.assertEqual(actual, expected)
 
     @unittest.skip
     def test_todict(self):
@@ -146,3 +134,13 @@ class test_basemodel(unittest.TestCase):
         n = self.model.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == self.model.updated_at)
+
+    @unittest.skip
+    def test_save(self):
+        """Testing save"""
+
+        self.model.save()
+        key = self.name + "." + self.model.id
+        with open("file.json", "r") as f:
+            j = json.load(f)
+            self.assertEqual(j[key], self.model.to_dict())
