@@ -91,13 +91,6 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     @unittest.skip
-    def test_todict(self):
-        """place holders"""
-
-        n = self.model.to_dict()
-        self.assertEqual(self.model.to_dict(), n)
-
-    @unittest.skip
     def test_kwargs_none(self):
         """place holders"""
 
