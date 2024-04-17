@@ -8,7 +8,7 @@ from unittest.mock import mock_open
 from unittest.mock import patch
 from unittest.mock import Mock
 from unittest import TestCase
-import unittest
+from unittest import skip
 import json
 import os
 
@@ -80,14 +80,13 @@ class test_fileStorage(TestCase):
         storage.delete(self.model_02)
         self.assertEqual(storage.all(), {})
 
-    @unittest.skip("Failure to have `all` recognise the mocks as being class")
+    @skip("`storage.all()` not seeing `Mock` as `class`")
     def test_that_all_provides_objects_by_class_type(self):
         """assert that `all` provides objects by class type"""
 
         storage.new(self.model_01)
         storage.new(self.model_02)
 
-        """
         self.assertEqual(
             storage.all(Mock),
             {
@@ -95,7 +94,6 @@ class test_fileStorage(TestCase):
                 self.identifier_02: self.model_02,
             },
         )
-        """
 
         storage.delete(self.model_01)
         storage.delete(self.model_02)
@@ -148,10 +146,9 @@ class test_fileStorage(TestCase):
         storage.new(self.model_01)
         storage.new(self.model_02)
 
-        mock_read_in = json.dumps({
-            identifier: obj.to_dict()
-            for identifier, obj in storage.all().items()
-        })
+        mock_read_in = json.dumps(
+            {identifier: obj.to_dict() for identifier, obj in storage.all().items()}
+        )
 
         with patch("builtins.open", mock_open()):
             storage.delete(self.model_01)
