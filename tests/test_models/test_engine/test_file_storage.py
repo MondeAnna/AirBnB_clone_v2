@@ -113,14 +113,6 @@ class test_fileStorage(TestCase):
         storage.delete(self.model_01)
 
     @unittest.skip
-    def test_save(self):
-        """FileStorage save method"""
-
-        new = BaseModel()
-        storage.save()
-        self.assertTrue(os.path.exists("file.json"))
-
-    @unittest.skip
     def test_reload(self):
         """Storage file is successfully loaded to __objects"""
 
