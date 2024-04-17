@@ -11,6 +11,9 @@ from models.base_model import BaseModel
 from models import storage
 
 
+# we meed to stop this from writing to file system
+
+
 class test_fileStorage(TestCase):
     """Class to test the file storage method"""
 
@@ -57,6 +60,16 @@ class test_fileStorage(TestCase):
         self.assertEqual(storage.all(), {self.identifier_01: self.model_01})
 
         storage.delete(self.model_01)
+        self.assertEqual(storage.all(), {})
+
+    def test_multiple_addition_of_same_object_twice_does_not_alter_storage(self):
+        """assert multiple addition of same does not alter storage"""
+
+        storage.new(self.model_02)
+        storage.new(self.model_02)
+        self.assertEqual(storage.all(), {self.identifier_02: self.model_02})
+
+        storage.delete(self.model_02)
         self.assertEqual(storage.all(), {})
 
     @unittest.skip
