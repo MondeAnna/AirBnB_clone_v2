@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
+from unittest.mock import mock_open
+from unittest.mock import patch
 from unittest.mock import Mock
 from unittest import TestCase
 from copy import deepcopy
@@ -18,7 +20,7 @@ class test_fileStorage(TestCase):
     """Class to test the file storage method"""
 
     def setUp(self):
-        """ Set up test environment """
+        """Set up test environment"""
 
         kwargs_01 = {
             "id": "c9b82080-fe21-4851-a044-0965293161a0",
@@ -49,7 +51,7 @@ class test_fileStorage(TestCase):
         """Tear Down kept as ci/cd checker may write to file during testing"""
 
         try:
-            os.remove('file.json')
+            os.remove("file.json")
         except:
             pass
 
@@ -76,7 +78,7 @@ class test_fileStorage(TestCase):
         storage.delete(self.model_02)
         self.assertEqual(storage.all(), {})
 
-    @unittest.skip
+    @unittest.skip("Failure to have `all` recognise the mocks as being class")
     def test_that_all_provides_objects_by_class_type(self):
         """assert that `all` provides objects by class type"""
 
@@ -84,7 +86,6 @@ class test_fileStorage(TestCase):
         storage.new(self.model_02)
 
         """
-        Failure to have `all` recognise the mocks as being class
         self.assertEqual(
             storage.all(Mock),
             {
@@ -97,18 +98,24 @@ class test_fileStorage(TestCase):
         storage.delete(self.model_01)
         storage.delete(self.model_02)
 
-    @unittest.skip
-    def test_empty(self):
-        """Data is saved to file"""
-        new = BaseModel()
-        thing = new.to_dict()
-        new.save()
-        new2 = BaseModel(**thing)
-        self.assertNotEqual(os.path.getsize("file.json"), 0)
+    @patch("json.dump")
+    def test_saving_data_to_file(self, mock_json_dump):
+        """assert data is saved to file"""
+
+        storage.new(self.model_01)
+
+        with patch("builtins.open", mock_open(), create=True) as open_:
+            storage.save()
+
+        open_.assert_called_once()
+        mock_json_dump.assert_called_once()
+
+        storage.delete(self.model_01)
 
     @unittest.skip
     def test_save(self):
         """FileStorage save method"""
+
         new = BaseModel()
         storage.save()
         self.assertTrue(os.path.exists("file.json"))
@@ -116,6 +123,7 @@ class test_fileStorage(TestCase):
     @unittest.skip
     def test_reload(self):
         """Storage file is successfully loaded to __objects"""
+
         new = BaseModel()
         storage.save()
         storage.reload()
@@ -126,6 +134,7 @@ class test_fileStorage(TestCase):
     @unittest.skip
     def test_reload_empty(self):
         """Load from an empty file"""
+
         with open("file.json", "w") as f:
             pass
         with self.assertRaises(ValueError):
@@ -134,11 +143,13 @@ class test_fileStorage(TestCase):
     @unittest.skip
     def test_reload_from_nonexistent(self):
         """Nothing happens if file does not exist"""
+
         self.assertEqual(storage.reload(), None)
 
     @unittest.skip
     def test_base_model_save(self):
         """BaseModel save method calls storage save"""
+
         new = BaseModel()
         new.save()
         self.assertTrue(os.path.exists("file.json"))
@@ -146,16 +157,19 @@ class test_fileStorage(TestCase):
     @unittest.skip
     def test_type_path(self):
         """Confirm __file_path is string"""
+
         self.assertEqual(type(storage._FileStorage__file_path), str)
 
     @unittest.skip
     def test_type_objects(self):
         """Confirm __objects is a dict"""
+
         self.assertEqual(type(storage.all()), dict)
 
     @unittest.skip
     def test_key_format(self):
         """Key is properly formatted"""
+
         new = BaseModel()
         _id = new.to_dict()["id"]
         for key in storage.all().keys():
@@ -165,6 +179,7 @@ class test_fileStorage(TestCase):
     @unittest.skip
     def test_storage_var_created(self):
         """FileStorage object storage created"""
+
         from models.engine.file_storage import FileStorage
 
         print(type(storage))
