@@ -1,28 +1,31 @@
 #!/usr/bin/python3
 
 
-"""Test suite for the city module"""
+"""Test suite for the state module"""
 
 
 from unittest import TestCase
 
 
-from models.base_model import Base, BaseModel
+from models.base_model import BaseModel
 from models.state import State
 
 
 class TestState(TestCase):
-    """Collective testing of city model attributes"""
 
-    def __init__(self, *args, **kwargs):
-        """place"""
+    """Collective testing of base model attributes"""
 
-        super().__init__(*args, **kwargs)
-        self.name = "State"
-        self.value = State
+    def setUp(self):
+        """Provide a factory for test instances"""
 
-    def test_name3(self):
-        """place"""
+        self.state = State()
 
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def test_initialisation_has_empty_attr(self):
+        """Provide a factory for test instances"""
+
+        self.assertEqual(self.state.name, "")
+
+    def test_inheritance(self):
+        """Assert is subclass of BaseModel"""
+
+        self.assertTrue(issubclass(State, BaseModel))
