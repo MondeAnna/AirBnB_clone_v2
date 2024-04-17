@@ -1,16 +1,20 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 
-from models.base_model import Base, BaseModel, sa
-from models.city import City  # use __init__.py version
+#from models.base_model import Base, BaseModel, models, sa
+# from models.city import City  # use __init__.py version
 # from models.engine.file_storage import FileStorage  # use __init__.py version
-from sqlalchemy.orm import relationship
+#from sqlalchemy.orm import relationship
+
+
+from models.base_model import Base, BaseModel, models, sa
 
 
 class State(BaseModel, Base):
-    ...
     """ State class """
-    __tablename__ = "states"
+
+    if models.HBNB_TYPE_STORAGE == "db":
+        __tablename__ = "states"
 
 '''
     name = sa.Column(

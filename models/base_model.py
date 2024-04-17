@@ -20,27 +20,28 @@ Base = declarative_base() if models.HBNB_TYPE_STORAGE == "db" else object
 class BaseModel:
     """A base class for all hbnb models"""
 
-    id = sa.Column(
-        "id",
-        sa.String(60),
-        nullable=False,
-        primary_key=True,
-    )
+    if models.HBNB_TYPE_STORAGE == "db":
+        id = sa.Column(
+            "id",
+            sa.String(60),
+            nullable=False,
+            primary_key=True,
+        )
 
-    created_at = sa.Column(
-        "created_at",
-        sa.DateTime,
-        nullable=False,
-        default=datetime.utcnow,
-    )
+        created_at = sa.Column(
+            "created_at",
+            sa.DateTime,
+            nullable=False,
+            default=datetime.utcnow,
+        )
 
-    updated_at = sa.Column(
-        "updated_at",
-        sa.DateTime,
-        nullable=False,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow,
-    )
+        updated_at = sa.Column(
+            "updated_at",
+            sa.DateTime,
+            nullable=False,
+            default=datetime.utcnow,
+            onupdate=datetime.utcnow,
+        )
 
     def __init__(self, *args, **kwargs):
         """

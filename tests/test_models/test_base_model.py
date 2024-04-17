@@ -15,7 +15,7 @@ import os
 from models.base_model import BaseModel
 
 
-class test_basemodel(TestCase):
+class TestBaseModel(TestCase):
     """place holders"""
 
     ALLOWED_ID_CHARS = string.hexdigits.lower() + "-"
