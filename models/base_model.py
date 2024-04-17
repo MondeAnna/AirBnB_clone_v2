@@ -14,9 +14,7 @@ import sqlalchemy as sa
 
 
 models = import_module("models")
-
-
-Base = declarative_base()
+Base = declarative_base() if models.HBNB_TYPE_STORAGE == "db" else object
 
 
 class BaseModel:
