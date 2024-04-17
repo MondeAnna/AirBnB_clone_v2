@@ -10,12 +10,12 @@ import json
 
 
 from models.base_model import BaseModel
-from models.user import User
+from models.amenity import Amenity
+from models.review import Review
 from models.place import Place
 from models.state import State
 from models.city import City
-from models.amenity import Amenity
-from models.review import Review
+from models.user import User
 
 
 class FileStorage:
@@ -38,12 +38,10 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes obj from storage"""
 
-        if not obj:
-            return
-
-        identifier = obj.to_dict()["__class__"] + "." + obj.id
-        FileStorage.__objects.pop(identifier)
-        self.save()
+        if obj:
+            identifier = f"{obj.to_dict()['__class__']}.{obj.id}"
+            FileStorage.__objects.pop(identifier)
+            self.save()
 
     def new(self, obj):
         """Adds new object to storage dictionary"""

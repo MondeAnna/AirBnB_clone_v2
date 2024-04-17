@@ -4,10 +4,16 @@
 """This module defines a base class for all models in our hbnb clone"""
 
 
-import uuid
+from importlib import import_module
 from datetime import datetime
+import uuid
+
+
 from sqlalchemy.ext.declarative import declarative_base
 import sqlalchemy as sa
+
+
+models = import_module("models")
 
 
 Base = declarative_base()
@@ -40,8 +46,16 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """
-        `kwargs` expected to have resulted from `to_dict`, thus
-        the focus on `id`, `update_at`, `created_at` and `__class__`
+        Spawns an existing object or generates a new one
+
+        Parameters
+        ----------
+        args : Any
+            unused
+
+        kwargs : Any
+            keyword-to-value pairings used to deserialise
+            and spawn existing objects
         """
 
         if not kwargs:
@@ -61,16 +75,14 @@ class BaseModel:
     def delete(self):
         """Deletes current instance from storage"""
 
-        storage.delete(self)
+        models.storage.delete(self)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
 
-        from models import storage
-
-        storage.new(self)
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
@@ -93,6 +105,8 @@ class BaseModel:
         return f"[{cls}] ({self.id}) {self.__dict__}"
 
     def __eq__(self, other):
+        """ensure two instances have the same id and were created at the same time"""
+
         return (
             self.id == other.id
             and self.__class__ == other.__class__

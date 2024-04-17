@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-""" place holders """
+
+
+"""test suite for base model"""
+
+
 from unittest.mock import mock_open
 from unittest.mock import patch
 from unittest import TestCase
@@ -20,15 +24,9 @@ class test_basemodel(TestCase):
         string.whitespace + string.ascii_uppercase + string.punctuation
     ).replace("-", "")
 
-    def __init__(self, *args, **kwargs):
-        """place holders"""
-
-        super().__init__(*args, **kwargs)
-
     def setUp(self):
         """create non-persistant and unique instance per test"""
 
-        self.name = "BaseModel"
         self.model = BaseModel()
 
     def test_model_without_kwargs(self):
@@ -60,13 +58,15 @@ class test_basemodel(TestCase):
         self.assertTrue("__class__" not in new_model.__dict__)
         self.assertEqual(attrs_actual, attrs_expected)
 
-    def test_two_models_are_the_same_when_fundamental_align(self):
+    def test_equality_of_separate_models(self):
+        """assert instance equality"""
+
         kwargs = self.model.to_dict()
         new_model = BaseModel(**kwargs)
         self.assertEqual(self.model, new_model)
 
     def test_invalid_kwargs_keywords(self):
-        """assert only lowercased strings to be kwarg keys"""
+        """assert non-string kwarg keys are erroneous"""
 
         expected_error = "keywords must be strings"
         kwargs = self.model.to_dict()
@@ -88,6 +88,8 @@ class test_basemodel(TestCase):
         self.assertEqual(actual_error, expected_error)
 
     def test_invalid_keys_in_kwargs(self):
+        """assert only lowercased strings to be kwarg keys"""
+
         expected_error = "__class__"
         kwargs = {"Name": "test"}
 
