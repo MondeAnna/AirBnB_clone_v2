@@ -3,7 +3,6 @@
 from models.base_model import BaseModel
 import unittest
 import datetime
-from uuid import UUID
 import json
 import os
 
@@ -14,13 +13,13 @@ class test_basemodel(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         """ place holders """
         super().__init__(*args, **kwargs)
-        self.name = 'BaseModel'
-        self.value = BaseModel
 
     def setUp(self):
         """ place holders """
-        pass
+        self.name = 'BaseModel'
+        self.model = BaseModel
 
+    # patch open at some point
     def tearDown(self):
         try:
             os.remove('file.json')
@@ -28,25 +27,17 @@ class test_basemodel(unittest.TestCase):
             pass
 
     @unittest.skip
-    def test_default(self):
-        """ place holders """
-        i = self.value()
-        self.assertEqual(type(i), self.value)
-
-    @unittest.skip
     def test_kwargs(self):
         """ place holders """
-        i = self.value()
-        copy = i.to_dict()
+        copy = self.model.to_dict()
         new = BaseModel(**copy)
-        self.assertFalse(new is i)
-        self.assertEqual(new, i)
+        self.assertFalse(new is self.model)
+        self.assertEqual(new, self.model)
 
     @unittest.skip
     def test_kwargs_int(self):
         """ place holders """
-        i = self.value()
-        copy = i.to_dict()
+        copy = self.model.to_dict()
         copy.update({1: 2})
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
@@ -54,26 +45,23 @@ class test_basemodel(unittest.TestCase):
     @unittest.skip
     def test_save(self):
         """ Testing save """
-        i = self.value()
-        i.save()
-        key = self.name + "." + i.id
+        self.model.save()
+        key = self.name + "." + self.model.id
         with open('file.json', 'r') as f:
             j = json.load(f)
-            self.assertEqual(j[key], i.to_dict())
+            self.assertEqual(j[key], self.model.to_dict())
 
     @unittest.skip
     def test_str(self):
         """ place holders """
-        i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+        self.assertEqual(str(self.model), '[{}] ({}) {}'.format(self.name, self.model.id,
+                         self.model.__dict__))
 
     @unittest.skip
     def test_todict(self):
         """ place holders """
-        i = self.value()
-        n = i.to_dict()
-        self.assertEqual(i.to_dict(), n)
+        n = self.model.to_dict()
+        self.assertEqual(self.model.to_dict(), n)
 
     @unittest.skip
     def test_kwargs_none(self):
@@ -92,20 +80,18 @@ class test_basemodel(unittest.TestCase):
     @unittest.skip
     def test_id(self):
         """ place holders """
-        new = self.value()
-        self.assertEqual(type(new.id), str)
+        id_type = type(self.model.id)
+        self.assertEqual(id_type, str)
 
     @unittest.skip
     def test_created_at(self):
         """ place holders """
-        new = self.value()
-        self.assertEqual(type(new.created_at), datetime.datetime)
+        self.assertEqual(type(self.model.created_at), datetime.datetime)
 
     @unittest.skip
     def test_updated_at(self):
         """ place holders """
-        new = self.value()
-        self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
+        self.assertEqual(type(self.model.updated_at), datetime.datetime)
+        n = self.model.to_dict()
         new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        self.assertFalse(new.created_at == self.model.updated_at)
