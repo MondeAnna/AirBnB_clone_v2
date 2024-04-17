@@ -139,16 +139,6 @@ class test_fileStorage(TestCase):
         self.assertEqual(storage.reload(), None)
 
     @unittest.skip
-    def test_key_format(self):
-        """Key is properly formatted"""
-
-        new = BaseModel()
-        _id = new.to_dict()["id"]
-        for key in storage.all().keys():
-            temp = key
-        self.assertEqual(temp, "BaseModel" + "." + _id)
-
-    @unittest.skip
     def test_storage_var_created(self):
         """FileStorage object storage created"""
 
