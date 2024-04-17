@@ -2,7 +2,7 @@
 """ place holders """
 from models.base_model import BaseModel
 import unittest
-from datetime import datetime
+import datetime
 import string
 import json
 import os
@@ -43,8 +43,8 @@ class test_basemodel(unittest.TestCase):
         updated_type = type(self.model.updated_at)
 
         self.assertEqual(id_type, str)
-        self.assertEqual(created_type, datetime)
-        self.assertEqual(updated_type, datetime)
+        self.assertEqual(created_type, datetime.datetime)
+        self.assertEqual(updated_type, datetime.datetime)
 
         for char in self.model.id:
             self.assertTrue(char in self.ALLOWED_ID_CHARS)
@@ -107,19 +107,6 @@ class test_basemodel(unittest.TestCase):
         expected = f"[BaseModel] ({self.model.id}) {self.model.__dict__}"
         actual = str(self.model)
         self.assertEqual(actual, expected)
-
-    @unittest.skip
-    def test_id(self):
-        """place holders"""
-
-        id_type = type(self.model.id)
-        self.assertEqual(id_type, str)
-
-    @unittest.skip
-    def test_created_at(self):
-        """place holders"""
-
-        self.assertEqual(type(self.model.created_at), datetime.datetime)
 
     @unittest.skip
     def test_updated_at(self):
