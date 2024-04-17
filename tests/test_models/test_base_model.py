@@ -17,6 +17,10 @@ class test_basemodel(unittest.TestCase):
         string.whitespace + string.ascii_uppercase + string.punctuation
     ).replace("-", "")
 
+    def __init__(self, *args, **kwargs):
+        """place holders"""
+        super().__init__(*args, **kwargs)
+
     def setUp(self):
         """place holders"""
         self.name = "BaseModel"
@@ -34,17 +38,29 @@ class test_basemodel(unittest.TestCase):
         id_type = type(self.model.id)
         created_type = type(self.model.created_at)
         updated_type = type(self.model.updated_at)
-        datetime_type = type(datetime.now())
 
         self.assertEqual(id_type, str)
         self.assertEqual(created_type, datetime)
-        self.assertEqual(updated_type, datetime_type)
+        self.assertEqual(updated_type, datetime)
 
         for char in self.model.id:
             self.assertTrue(char in self.ALLOWED_ID_CHARS)
             self.assertTrue(char not in self.DISALLOWED_ID_CHARS)
 
         self.assertEqual(self.model.created_at, self.model.updated_at)
+
+    def test_model_with_kwargs(self):
+        """focus on `id`, `created_at`,  `updated_at` and `__class__`"""
+        kwargs = self.model.to_dict()
+        new_model = BaseModel(**kwargs)
+        attrs_actual = list(new_model.__dict__.keys())
+        attrs_expected = ["id", "created_at", "updated_at"]
+
+        self.assertTrue("__class__" not in new_model.__dict__)
+        self.assertEqual(attrs_actual, attrs_expected)
+        self.assertEqual(self.model.id, new_model.id)
+        self.assertNotEqual(new_model.created_at, new_model.updated_at)
+        self.assertEqual(self.model.created_at, new_model.created_at)
 
     @unittest.skip
     def test_kwargs(self):
