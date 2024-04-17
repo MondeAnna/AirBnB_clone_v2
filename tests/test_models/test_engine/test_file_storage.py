@@ -112,16 +112,29 @@ class test_fileStorage(TestCase):
 
         storage.delete(self.model_01)
 
+    def test_reload_from_nonexistent_file(self):
+        """assert None is returned if file does not exist"""
+
+        self.assertEqual(storage.reload(), None)
+
     @unittest.skip
+    @patch("json.load")
     def test_reload(self):
         """Storage file is successfully loaded to __objects"""
 
-        new = BaseModel()
+        with patch("builtins.open", mock_open, create=True) as open_:
+            storage.reload()
+
+        """
+        storage.new(self.model_02)
         storage.save()
-        storage.reload()
-        for obj in storage.all().values():
-            loaded = obj
-        self.assertEqual(new.to_dict()["id"], loaded.to_dict()["id"])
+        storage.delete(self.model_02)
+
+        print(storage.all())
+        self.assertTrue(self.identifier_02 in storage.all().keys())
+
+        storage.delete(self.model_02)
+        """
 
     @unittest.skip
     def test_reload_empty(self):
@@ -131,9 +144,3 @@ class test_fileStorage(TestCase):
             pass
         with self.assertRaises(ValueError):
             storage.reload()
-
-    @unittest.skip
-    def test_reload_from_nonexistent(self):
-        """Nothing happens if file does not exist"""
-
-        self.assertEqual(storage.reload(), None)
