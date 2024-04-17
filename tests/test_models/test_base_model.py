@@ -19,10 +19,12 @@ class test_basemodel(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         """place holders"""
+
         super().__init__(*args, **kwargs)
 
     def setUp(self):
-        """place holders"""
+        """create non-persistant and unique instance per test"""
+
         self.name = "BaseModel"
         self.model = BaseModel()
 
@@ -35,6 +37,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_model_without_kwargs(self):
         """focus on `id`, `created_at` and `updated_at`"""
+
         id_type = type(self.model.id)
         created_type = type(self.model.created_at)
         updated_type = type(self.model.updated_at)
@@ -51,6 +54,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_model_with_kwargs(self):
         """focus on `id`, `created_at`,  `updated_at` and `__class__`"""
+
         kwargs = self.model.to_dict()
         new_model = BaseModel(**kwargs)
 
@@ -65,17 +69,24 @@ class test_basemodel(unittest.TestCase):
         new_model = BaseModel(**kwargs)
         self.assertEqual(self.model, new_model)
 
-    @unittest.skip
     def test_kwargs_int(self):
-        """place holders"""
-        copy = self.model.to_dict()
-        copy.update({1: 2})
-        with self.assertRaises(TypeError):
-            new = BaseModel(**copy)
+        """assert that only strings can be used as kwarg keys"""
+
+        kwargs = self.model.to_dict()
+        kwargs.update({1: 2})
+
+        with self.assertRaises(TypeError) as exception:
+            BaseModel(**kwargs)
+
+        expected_error = "keywords must be strings"
+        actual_error, *_ = exception.exception.args
+
+        self.assertEqual(actual_error, expected_error)
 
     @unittest.skip
     def test_save(self):
         """Testing save"""
+
         self.model.save()
         key = self.name + "." + self.model.id
         with open("file.json", "r") as f:
@@ -85,6 +96,7 @@ class test_basemodel(unittest.TestCase):
     @unittest.skip
     def test_str(self):
         """place holders"""
+
         self.assertEqual(
             str(self.model),
             "[{}] ({}) {}".format(self.name, self.model.id, self.model.__dict__),
@@ -93,12 +105,14 @@ class test_basemodel(unittest.TestCase):
     @unittest.skip
     def test_todict(self):
         """place holders"""
+
         n = self.model.to_dict()
         self.assertEqual(self.model.to_dict(), n)
 
     @unittest.skip
     def test_kwargs_none(self):
         """place holders"""
+
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
@@ -106,6 +120,7 @@ class test_basemodel(unittest.TestCase):
     @unittest.skip
     def test_kwargs_one(self):
         """place holders"""
+
         n = {"Name": "test"}
         with self.assertRaises(KeyError):
             new = self.value(**n)
@@ -113,17 +128,20 @@ class test_basemodel(unittest.TestCase):
     @unittest.skip
     def test_id(self):
         """place holders"""
+
         id_type = type(self.model.id)
         self.assertEqual(id_type, str)
 
     @unittest.skip
     def test_created_at(self):
         """place holders"""
+
         self.assertEqual(type(self.model.created_at), datetime.datetime)
 
     @unittest.skip
     def test_updated_at(self):
         """place holders"""
+
         self.assertEqual(type(self.model.updated_at), datetime.datetime)
         n = self.model.to_dict()
         new = BaseModel(**n)
