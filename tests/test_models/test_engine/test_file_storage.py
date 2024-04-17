@@ -98,6 +98,14 @@ class test_fileStorage(TestCase):
         storage.delete(self.model_01)
         storage.delete(self.model_02)
 
+    def test_no_saving_done_when_storage_is_empty(self):
+        """assert no saving is done when storage is empty"""
+
+        with patch("builtins.open", mock_open(), create=True) as open_:
+            storage.save()
+
+        open_.assert_not_called()
+
     @patch("json.dump")
     def test_saving_data_to_file(self, mock_json_dump):
         """assert data is saved to file"""
@@ -118,6 +126,13 @@ class test_fileStorage(TestCase):
         self.assertEqual(storage.reload(), None)
 
     @unittest.skip
+    def test_reload_empty(self):
+        """Load from an empty file"""
+
+        with self.assertRaises(ValueError):
+            storage.reload()
+
+    @unittest.skip
     @patch("json.load")
     def test_reload(self):
         """Storage file is successfully loaded to __objects"""
@@ -135,12 +150,3 @@ class test_fileStorage(TestCase):
 
         storage.delete(self.model_02)
         """
-
-    @unittest.skip
-    def test_reload_empty(self):
-        """Load from an empty file"""
-
-        with open("file.json", "w") as f:
-            pass
-        with self.assertRaises(ValueError):
-            storage.reload()
