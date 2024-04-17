@@ -120,7 +120,8 @@ class test_fileStorage(TestCase):
 
         storage.delete(self.model_01)
 
-    def test_reload_from_nonexistent_file(self):
+    @patch("pathlib.Path.is_file", return_value=False)
+    def test_reload_from_nonexistent_file(self, mock_path):
         """assert None is returned if file does not exist"""
 
         self.assertEqual(storage.reload(), None)
