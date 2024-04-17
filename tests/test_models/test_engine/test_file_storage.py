@@ -20,23 +20,30 @@ class test_fileStorage(TestCase):
     def setUp(self):
         """ Set up test environment """
 
-        kwargs = {
+        kwargs_01 = {
             "id": "c9b82080-fe21-4851-a044-0965293161a0",
             "created_at": "2024-04-17T12:25:47.964490",
             "updated_at": "2024-04-17T12:25:47.964490",
             "__class__": "BaseModel",
         }
 
+        kwargs_02 = {
+            "id": "f34kjher-345h9-f23re-skfu3289hfdfw",
+            "created_at": "2023-11-29T00:25:47.964490",
+            "updated_at": "2023-11-29T15:05:03.934575",
+            "__class__": "User",
+        }
+
         self.model_01 = Mock()
+        self.model_01.to_dict.return_value = kwargs_01
+        self.model_01.id = kwargs_01.get("id")
 
-        self.model_01.to_dict.return_value = kwargs
-        self.model_01.id = kwargs.get("id")
+        self.model_02 = Mock()
+        self.model_02.to_dict.return_value = kwargs_02
+        self.model_02.id = kwargs_02.get("id")
 
-        self.model_02 = deepcopy(self.model_01)
-        self.model_02.id = "".join(reversed(self.model_01.id))
-
-        self.identifier_01 = f"{kwargs.get('__class__')}.{self.model_01.id}"
-        self.identifier_02 = f"{kwargs.get('__class__')}.{self.model_02.id}"
+        self.identifier_01 = f"BaseModel.{self.model_01.id}"
+        self.identifier_02 = f"User.{self.model_02.id}"
 
     '''
 
@@ -71,6 +78,27 @@ class test_fileStorage(TestCase):
 
         storage.delete(self.model_02)
         self.assertEqual(storage.all(), {})
+
+    @unittest.skip
+    def test_that_all_provides_objects_by_class_type(self):
+        """assert that `all` provides objects by class type"""
+
+        storage.new(self.model_01)
+        storage.new(self.model_02)
+
+        """
+        Failure to have `all` recognise the mocks as being class
+        self.assertEqual(
+            storage.all(Mock),
+            {
+                self.identifier_01: self.model_01,
+                self.identifier_02: self.model_02,
+            },
+        )
+        """
+
+        storage.delete(self.model_01)
+        storage.delete(self.model_02)
 
     @unittest.skip
     def test_base_model_instantiation(self):
