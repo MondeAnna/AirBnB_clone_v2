@@ -58,11 +58,7 @@ class BaseModel:
         else:
             del kwargs["__class__"]
 
-            kwargs["updated_at"] = datetime.strptime(
-                kwargs["updated_at"],
-                "%Y-%m-%dT%H:%M:%S.%f",
-            )
-
+            kwargs["updated_at"] = datetime.now()
             kwargs["created_at"] = datetime.strptime(
                 kwargs["created_at"],
                 "%Y-%m-%dT%H:%M:%S.%f",
@@ -105,5 +101,4 @@ class BaseModel:
             self.id == other.id
             and self.__class__ == other.__class__
             and self.created_at == other.created_at
-            and self.updated_at == other.updated_at
         )

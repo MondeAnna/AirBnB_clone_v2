@@ -108,14 +108,13 @@ class test_basemodel(unittest.TestCase):
         actual = str(self.model)
         self.assertEqual(actual, expected)
 
-    @unittest.skip
     def test_updated_at(self):
-        """place holders"""
+        """assert instantiating with kwargs alters `updated_at`"""
 
-        self.assertEqual(type(self.model.updated_at), datetime.datetime)
-        n = self.model.to_dict()
-        new = BaseModel(**n)
-        self.assertFalse(new.created_at == self.model.updated_at)
+        kwargs = self.model.to_dict()
+        new_model = BaseModel(**kwargs)
+
+        self.assertNotEqual(new_model.created_at, new_model.updated_at)
 
     @unittest.skip
     def test_save(self):
