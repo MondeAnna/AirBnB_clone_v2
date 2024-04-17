@@ -45,16 +45,13 @@ class test_fileStorage(TestCase):
         self.identifier_01 = f"BaseModel.{self.model_01.id}"
         self.identifier_02 = f"User.{self.model_02.id}"
 
-    '''
-
     def tearDown(self):
-        """ Remove storage file at end of tests """
+        """Tear Down kept as ci/cd checker may write to file during testing"""
 
         try:
             os.remove('file.json')
         except:
             pass
-    '''
 
     def test_storage_is_initially_empty(self):
         """assert that storage is initially empty"""
@@ -99,12 +96,6 @@ class test_fileStorage(TestCase):
 
         storage.delete(self.model_01)
         storage.delete(self.model_02)
-
-    @unittest.skip
-    def test_base_model_instantiation(self):
-        """File is not created on BaseModel save"""
-        new = BaseModel()
-        self.assertFalse(os.path.exists("file.json"))
 
     @unittest.skip
     def test_empty(self):
