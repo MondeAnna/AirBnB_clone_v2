@@ -4,7 +4,11 @@
 """City Module for HBNB project"""
 
 
+from sqlalchemy.orm import relationship
+
+
 from models.base_model import Base, BaseModel, models, sa
+from models.place import Place
 
 
 class City(BaseModel, Base):
@@ -25,5 +29,7 @@ class City(BaseModel, Base):
             sa.ForeignKey("states.id"),
             nullable=False,
         )
+
+        places = relationship(Place, backref="cities", cascade="all, delete")
     else:
         name = state_id = ""
