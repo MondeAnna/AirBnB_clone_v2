@@ -68,7 +68,7 @@ class DBStorage:
             _all = [
                 obj
                 for model in MODELS
-                for objs in self.__session.query(nodel).all()
+                for objs in self.__session.query(model).all()
                 for obj in objs
             ]
 

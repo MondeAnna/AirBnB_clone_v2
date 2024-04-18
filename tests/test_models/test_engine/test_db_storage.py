@@ -32,7 +32,11 @@ class TestDatabaseStorage(TestCase):
         self.review = db_storage.Review()
         self.user = db_storage.User()
 
-    def test_empty_db_return_empty_list_when_using_model(self):
+    def test_db_query_limited_to_models(self):
         for model in db_storage.MODELS.values():
             result = storage.all(model)
             self.assertEqual(result, {})
+
+    @skip("difficulty having models recognised as models")
+    def test_query_of_entire_empty_db(self):
+        self.assertEqual(storage.all(), {})
