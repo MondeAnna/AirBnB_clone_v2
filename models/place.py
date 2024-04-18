@@ -4,7 +4,11 @@
 """ Place Module for HBNB project """
 
 
+from sqlalchemy.orm import relationship
+
+
 from models.base_model import Base, BaseModel, models, sa
+from models.review import Review
 
 
 class Place(BaseModel, Base):
@@ -86,6 +90,7 @@ class Place(BaseModel, Base):
             nullable=False,
         )
 
+        reviews = relationship(Review, backref="place", cascade="all, delete")
     else:
         city_id = ""
         user_id = ""
