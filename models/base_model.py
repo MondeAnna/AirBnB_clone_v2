@@ -58,18 +58,9 @@ class BaseModel:
         """
 
         if not kwargs:
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.now()
+            self.__init_default()
         else:
-            del kwargs["__class__"]
-
-            kwargs["updated_at"] = datetime.now()
-            kwargs["created_at"] = datetime.strptime(
-                kwargs["created_at"],
-                "%Y-%m-%dT%H:%M:%S.%f",
-            )
-
-            self.__dict__.update(kwargs)
+            self.__init_kwargs(kwargs)
 
     def delete(self):
         """Deletes current instance from storage"""
@@ -97,12 +88,6 @@ class BaseModel:
 
         return dictionary
 
-    def __str__(self):
-        """Returns a string representation of the instance"""
-
-        cls = (str(type(self)).split(".")[-1]).split("'")[0]
-        return f"[{cls}] ({self.id}) {self.__dict__}"
-
     def __eq__(self, other):
         """ensure two instances have the same id and were created at the same time"""
 
@@ -111,3 +96,44 @@ class BaseModel:
             and self.__class__ == other.__class__
             and self.created_at == other.created_at
         )
+
+    def __init_default(self):
+        """Generates a new BaseModel object"""
+
+        self.id = str(uuid.uuid4())
+        self.created_at = self.updated_at = datetime.now()
+
+    def __init_kwargs(self, kwargs):
+        """
+        Spawns an existing object
+
+        Parameters
+        ----------
+        kwargs : Any
+            keyword-to-value pairings used to deserialise
+            and spawn existing objects
+        """
+
+        if kwargs.get("__class__"):
+            del kwargs["__class__"]
+
+        if not kwargs.get("id"):
+            kwargs["id"] = str(uuid.uuid4())
+
+        kwargs["updated_at"] = datetime.now()
+
+        if kwargs.get("created_at"):
+            kwargs["created_at"] = datetime.strptime(
+                kwargs["created_at"],
+                "%Y-%m-%dT%H:%M:%S.%f",
+            )
+        else:
+            kwargs["created_at"] = kwargs["updated_at"]
+
+        self.__dict__.update(kwargs)
+
+    def __str__(self):
+        """Returns a string representation of the instance"""
+
+        cls = (str(type(self)).split(".")[-1]).split("'")[0]
+        return f"[{cls}] ({self.id}) {self.__dict__}"
