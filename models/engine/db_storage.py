@@ -1,8 +1,25 @@
 #!/usr/bin/python3
+
+
 """This module defines a class to manage db storage for hbnb clone"""
+
+
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 import os
+
+
+from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.review import Review
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.user import User
+
+
 from models.base_model import Base
 
 
@@ -11,6 +28,17 @@ PWD = os.getenv("HBNB_MYSQL_PWD", "hbnb_test_pwd")
 HOST = os.getenv("HBNB_MYSQL_HOST", "localhost")
 DB = os.getenv("HBNB_MYSQL_DB", "hbnb_test_db")
 ENV = os.getenv("HBNB_ENV", "test")
+
+
+MODELS = {
+    "Amenity": Amenity,
+    # "BaseModel": BaseModel,
+    "City": City,
+    "Place": Place,
+    "Review": Review,
+    "State": State,
+    "User": User,
+}
 
 
 class DBStorage:
@@ -28,31 +56,46 @@ class DBStorage:
 
         self.__session = Session(bind=self.__engine)
 
-        # name this properly please
         if ENV == "test":
-            Base.metadata.reflect(self.__engine)
             Base.metadata.drop_all(self.__engine)
 
         Base.metadata.create_all(self.__engine)
 
     def all(self, cls=None):
         if cls:
-            return self.__session.query(cls).all()  # see if .all() is needed
-        return self.__session.query().all()  # see if this workds
+            _all = self.__session.query(cls).all()
+        else:
+            _all = [
+                obj
+                for model in MODELS
+                for objs in self.__session.query(nodel).all()
+                for obj in objs
+            ]
 
-    def new(self, obj):
-        self.__session.add(obj)
-        """ add the object to the current database session (self.__session) """
-
-    def save(self):
-        self.__session.commit()
-        """ commit all changes of the current database session """
-        ...
+        return {
+            f"{obj.__class__.__name__}.{obj.id}": obj
+            for obj in _all
+        }
 
     def delete(self, obj=None):
-        """delete from the current database session obj if not None"""
+        """delete from current db session if `obj` is not None"""
+
         if obj:
-            ...
+            self.__session.delete()
+
+    def new(self, obj):
+        """add object to current db session"""
+
+        self.__session.add(obj)
 
     def reload(self):
-        ...
+        Base.metadata.create_all(self.__engine)
+        sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sess_factory)
+        self.__session = Session
+
+    def save(self):
+        """commit all changes of current db session"""
+
+        self.__session.commit()
+
