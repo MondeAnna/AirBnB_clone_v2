@@ -117,6 +117,10 @@ class BaseModel:
         if kwargs.get("__class__"):
             del kwargs["__class__"]
 
+        for key in kwargs.keys():
+            if key.istitle():
+                raise KeyError("__class__")
+
         if not kwargs.get("id"):
             kwargs["id"] = str(uuid.uuid4())
 

@@ -64,3 +64,5 @@ class TestDatabaseStorage(TestCase):
 
         self.assertEqual(actual_user, expected_user)
         self.assertEqual(actual_review, {})
+
+        storage.delete(self.user)

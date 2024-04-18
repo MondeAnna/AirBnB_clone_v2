@@ -80,8 +80,10 @@ class DBStorage:
     def delete(self, obj=None):
         """delete from current db session if `obj` is not None"""
 
-        if obj:
-            self.__session.delete()
+        try:
+            self.__session.delete(obj)
+        except Exception:
+            ...
 
     def new(self, obj):
         """add object to current db session"""
