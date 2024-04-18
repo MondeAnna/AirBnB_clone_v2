@@ -2,7 +2,11 @@
 """This module defines a class User"""
 
 
+from sqlalchemy.orm import relationship
+
+
 from models.base_model import Base, BaseModel, models, sa
+from models.place import Place
 
 
 class User(BaseModel, Base):
@@ -34,5 +38,7 @@ class User(BaseModel, Base):
             sa.String(128),
             nullable=False,
         )
+
+        places = relationship(Place, backref="user", cascade="all, delete")
     else:
         email = password = first_name = last_name = ""
