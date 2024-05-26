@@ -32,7 +32,6 @@ ENV = os.getenv("HBNB_ENV", "test")
 
 MODELS = {
     "Amenity": Amenity,
-    # "BaseModel": BaseModel,
     "City": City,
     "Place": Place,
     "Review": Review,
@@ -43,6 +42,7 @@ MODELS = {
 
 class DBStorage:
     """This class manages db storage for hbnb clone"""
+
     __engine = None
     __session = None
 
@@ -62,6 +62,8 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
 
     def all(self, cls=None):
+        """Returns a dictionary of models currently in storage"""
+
         if cls:
             _all = self.__session.query(cls).all()
         else:
@@ -77,8 +79,13 @@ class DBStorage:
             for obj in _all
         }
 
+    def close(self):
+        """Close Database Connection"""
+
+        self.__session.close()
+
     def delete(self, obj=None):
-        """delete from current db session if `obj` is not None"""
+        """Delete from current db session if `obj` is not None"""
 
         try:
             self.__session.delete(obj)
@@ -86,18 +93,19 @@ class DBStorage:
             ...
 
     def new(self, obj):
-        """add object to current db session"""
+        """Add object to current db session"""
 
         self.__session.add(obj)
 
     def reload(self):
+        """Create a new Database connection, reloading data there from"""
+
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session
 
     def save(self):
-        """commit all changes of current db session"""
+        """Commit all changes of current db session"""
 
         self.__session.commit()
-

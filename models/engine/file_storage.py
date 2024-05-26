@@ -35,6 +35,11 @@ class FileStorage:
             if cls is obj.__class__
         }
 
+    def close(self):
+        """Deserialised JSON file to objects"""
+
+        self.reload()
+
     def delete(self, obj=None):
         """Deletes obj from storage"""
 
