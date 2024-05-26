@@ -4,9 +4,6 @@
 """ State Module for HBNB project """
 
 
-# from models.engine.file_storage import FileStorage
-
-
 from sqlalchemy.orm import relationship
 
 
@@ -17,7 +14,7 @@ from models.city import City
 class State(BaseModel, Base):
     """ State class """
 
-    if models.HBNB_TYPE_STORAGE == "db":
+    if models.STORAGE_TYPE == "db":
         __tablename__ = "states"
 
         name = sa.Column(
@@ -30,16 +27,21 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-'''
     @property
     def cities(self):
-        from models import storage
-        if storage is FileStorage:
+        """
+        Provides a map of City objects from storage linked
+        to the current State
+        """
+
+        FileStorage = models.engine.file_storage.FileStorage
+
+        if models.storage is FileStorage:
             return State.__cities
-        stored = storage.all(City)
-        return {
-            identifier: obj
-            for identifier, obj in stored.items()
-            if self.id in identifier
-        }
-'''
+
+        stored = models.storage.all(City)
+
+        return [
+            city for id_, city in stored.items()
+            if self.id in id_
+        ]

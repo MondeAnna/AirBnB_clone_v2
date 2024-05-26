@@ -14,7 +14,7 @@ from models.place import Place
 class City(BaseModel, Base):
     """The city class, contains state ID and name"""
 
-    if models.HBNB_TYPE_STORAGE == "db":
+    if models.STORAGE_TYPE == "db":
         __tablename__ = "cities"
 
         name = sa.Column(

@@ -14,7 +14,7 @@ from models.review import Review
 class Place(BaseModel, Base):
     """ A place to stay """
 
-    if models.HBNB_TYPE_STORAGE == "db":
+    if models.STORAGE_TYPE == "db":
         __tablename__ = "places"
 
         city_id = sa.Column(

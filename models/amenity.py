@@ -10,7 +10,7 @@ from models.base_model import Base, BaseModel, models, sa
 class Amenity(BaseModel, Base):
     """The amenity class, focused on the amenity's name"""
 
-    if models.HBNB_TYPE_STORAGE == "db":
+    if models.STORAGE_TYPE == "db":
         __tablename__ = "amenities"
 
         name = sa.Column(

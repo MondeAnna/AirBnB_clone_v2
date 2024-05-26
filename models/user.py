@@ -13,7 +13,7 @@ from models.review import Review
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
 
-    if models.HBNB_TYPE_STORAGE == "db":
+    if models.STORAGE_TYPE == "db":
         __tablename__ = "users"
 
         email = sa.Column(

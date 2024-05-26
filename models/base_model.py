@@ -14,13 +14,13 @@ import sqlalchemy as sa
 
 
 models = import_module("models")
-Base = declarative_base() if models.HBNB_TYPE_STORAGE == "db" else object
+Base = declarative_base() if models.STORAGE_TYPE == "db" else object
 
 
 class BaseModel:
     """A base class for all hbnb models"""
 
-    if models.HBNB_TYPE_STORAGE == "db":
+    if models.STORAGE_TYPE == "db":
         id = sa.Column(
             "id",
             sa.String(60),

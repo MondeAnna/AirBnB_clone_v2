@@ -10,7 +10,7 @@ from models.base_model import Base, BaseModel, models, sa
 class Review(BaseModel, Base):
     """ Review classto store review information """
 
-    if models.HBNB_TYPE_STORAGE == "db":
+    if models.STORAGE_TYPE == "db":
         __tablename__ = "reviews"
 
         text = sa.Column(
